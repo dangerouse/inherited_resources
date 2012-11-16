@@ -295,7 +295,7 @@ module InheritedResources
         self.resource_class ||= begin
           namespaced_class = self.name.sub(/Controller/, '').singularize
           namespaced_class.constantize
-        rescue NameError
+        rescue NameError, LoadError
           nil
         end
 
@@ -304,7 +304,7 @@ module InheritedResources
           namespaced_classes = self.name.sub(/Controller/, '').split('::')
           namespaced_class = [namespaced_classes.first, namespaced_classes.last].join('::').singularize
           namespaced_class.constantize
-        rescue NameError
+        rescue NameError, LoadError
           nil
         end
 
@@ -312,7 +312,7 @@ module InheritedResources
         self.resource_class ||= begin
           camelcased_class = self.name.sub(/Controller/, '').gsub('::', '').singularize
           camelcased_class.constantize
-        rescue NameError
+        rescue NameError, LoadError
           nil
         end
 
@@ -320,7 +320,7 @@ module InheritedResources
         self.resource_class ||= begin
           class_name = self.controller_name.classify
           class_name.constantize
-        rescue NameError => e
+        rescue NameError, LoadError => e
           raise unless e.message.include?(class_name)
           nil
         end
